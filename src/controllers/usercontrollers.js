@@ -30,14 +30,17 @@ module.exports = {
 
     //get contact list for perticular user
     getcontactlist: async (req, res) => {
-       
+
         const getContact = await ContactModel.find({
             UserId: req.params.userid
-        })
+        }).collation({ 'locale': 'en' })// to remove the case sensitivity  while sorting
+            .sort({ 'name': 1 })
+        
         if (getContact.length == 0)
             return res.status(404).send({ msg: "Contact not found" })
 
         return res.status(201).send({ data: getContact })
+
     }
 
 }
